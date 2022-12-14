@@ -1,1 +1,1 @@
-
+While communicating with pico, remember to define i2c pins (SDA and SCL). Pin numbers are in terms of GPIO pins.
