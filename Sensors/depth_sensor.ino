@@ -37,7 +37,8 @@ THE SOFTWARE.
 #include <Wire.h>
 #include "MS5837.h"
 
-const byte sda = 16;
+/* Define the set of PICO's I2C pins, GPIO pins 16 and 17. */
+const byte sda = 16; 
 const byte scl = 17;
 
 MS5837 sensor;
@@ -46,7 +47,7 @@ void setup() {
   
   Serial.begin(9600);
   Serial.println("Starting");
-  pinMode(25, OUTPUT);
+  pinMode(25, OUTPUT); // built-in LED at pin 25, light up to indicate program is running
   digitalWrite(25, HIGH);
   Wire.setSDA(sda);
   Wire.setSCL(scl);
