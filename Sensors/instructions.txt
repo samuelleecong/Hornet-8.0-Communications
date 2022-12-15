@@ -1,3 +1,0 @@
-Install MS5837 library on Arduino. (under library manager)
-
-- While communicating with pico, remember to define i2c pins (SDA and SCL). Pin numbers are in terms of GPIO pins.
