@@ -1,0 +1,4 @@
+Modified LSM9DS1 Sparkfun library. Download from unofficial elect group. Commented out all the SPI functions from the library, leaving only the I2C functions. Only
+Wire0 I2C pins work. (refer to Pico pinouts)
+
+Sparkfun guide: https://learn.sparkfun.com/tutorials/lsm9ds1-breakout-hookup-guide
