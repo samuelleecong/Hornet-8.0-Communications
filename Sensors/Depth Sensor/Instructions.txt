@@ -1,0 +1,11 @@
+Official Link: https://bluerobotics.com/store/sensors-sonars-cameras/sensors/bar30-sensor-r1/
+
+Install MS5837 library by BlueRobotics on Arduino. (under library manager)
+
+While communicating with Pico, remember to define i2c pins (SDA and SCL). Pin numbers are in terms of GPIO pins.
+Connect the JST GH connector or bare wires to the appropriate microcontroller pins, using a logic level converter iftesting with a board that outputs 5V logic:
+
+Green: SCL (3.3V logic)
+White: SDA (3.3V logic)
+Red: +2.5-5.5V
+Black: Ground
