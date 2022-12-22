@@ -9,3 +9,5 @@ Green: SCL (3.3V logic)
 White: SDA (3.3V logic)
 Red: +2.5-5.5V
 Black: Ground
+
+If intending to test using I2C 1 bus, (aka SDA1, SCL1), go to MS5837.cpp library, replace all Wire.xxx functions with Wire1.xxx. DO NOT change #include<Wire.h> to #include<Wire1.h>!
