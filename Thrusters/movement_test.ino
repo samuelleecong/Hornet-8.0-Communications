@@ -64,14 +64,17 @@ void loop() {
   //    thruster[i].writeMicroseconds(pwm4); 
   //  } 
   //  delay(500); 
+ /* Increasing speed in forward direction */
   for (int j = 0; j <= 30; j = j + 2) { 
     thruster_A.writeMicroseconds(1525 + j); 
     thruster_B.writeMicroseconds(1525 + j); 
     delay(100); 
   } 
+ /* Stop for .5sec */
   thruster_A.writeMicroseconds(1500); 
   thruster_B.writeMicroseconds(1500); 
   delay(500); 
+ /* Increasing speed in reverse direction */
   for (int i = 0; i <= 30; i += 2)  { 
     thruster_A.writeMicroseconds(1475 - i); 
     thruster_B.writeMicroseconds(1475 - i); 
