@@ -1,3 +1,5 @@
+/** The program below intends to receive 4 PWM values from SBC via CAN Bus. There is no interrupt for MCP2515. **/
+
 #ifndef ARDUINO_ARCH_RP2040
 #endif
 
@@ -15,15 +17,14 @@ Servo thruster_C;
 Servo thruster_D;
 
 int ks_state;
+int pwm[4];
 
 static const byte MCP2515_SCK  = 13 ; // SCK input of MCP2515 (adapt to your design)
 static const byte MCP2515_MOSI = 11 ; // SDI input of MCP2515 (adapt to your design)
 static const byte MCP2515_MISO = 12 ; // SDO output of MCP2515 (adapt to your design)
-
 static const byte MCP2515_CS   = 10 ;  // CS input of MCP2515 (adapt to your design)
-static const byte MCP2515_INT  = 2 ;  // INT output of MCP2515 (adapt to your design)
 
-ACAN2515 can (MCP2515_CS, SPI, MCP2515_INT) ;
+ACAN2515 can(MCP2515_CS, SPI, 255);
 
 static const uint32_t QUARTZ_FREQUENCY = 8UL * 1000UL * 1000UL ; // 20 MHz
 static uint32_t gBlinkLedDate = 0;
@@ -67,7 +68,7 @@ void setup() {
   Serial.println ("Configure ACAN2515") ;
   ACAN2515Settings settings (QUARTZ_FREQUENCY, 125UL * 1000UL) ; // CAN bit rate 125 kb/s
   // settings.mRequestedMode = ACAN2515Settings::LoopBackMode ; // Select loopback mode
-  const uint16_t errorCode = can.begin (settings, [] { can.isr () ; }) ;
+  const uint16_t errorCode = can.begin(settings, NULL);
   //const uint16_t errorCode = can.begin (settings, [] {}) ;
   if (errorCode == 0) {
     Serial.print ("Bit Rate prescaler: ") ;
@@ -106,6 +107,7 @@ void loop() {
     ks_state = 1;
     esc_innit();
   }
+  can.poll();
   CANMessage frame ;
   if (can.receive (frame)) {
     gReceivedFrameCount ++ ;
@@ -114,17 +116,22 @@ void loop() {
     Serial.print ("  rtr: ");Serial.println (frame.rtr);
     Serial.print ("  len: ");Serial.println (frame.len);
     Serial.print ("  data: ");
-    for(int x=0;x<frame.len;x++) {
+    /*for(int x = 0; x < frame.len; x++) {
       Serial.print (frame.data[x],HEX); Serial.print(":");
     }
-    Serial.println ("");
+    Serial.println ("");*/
     Serial.print ("Received: ") ;
     Serial.println (gReceivedFrameCount) ;
   }
-  
+  for (int i = 0; i < 4; i++) {
+    if (pwm[i] != 0) {
+      pwm[i] = frame.data[i];
+      Serial.print("pwm value: ");
+      Serial.println(pwm[i]);
+    }
   int pwm = frame.data[0];
-  thruster_A.writeMicroseconds(pwm);
-  thruster_B.writeMicroseconds(pwm);
-  thruster_C.writeMicroseconds(pwm);
-  thruster_D.writeMicroseconds(pwm);
+  thruster_A.writeMicroseconds(pwm[0]);
+  thruster_B.writeMicroseconds(pwm[1]);
+  thruster_C.writeMicroseconds(pwm[2]);
+  thruster_D.writeMicroseconds(pwm[3]);
 }
