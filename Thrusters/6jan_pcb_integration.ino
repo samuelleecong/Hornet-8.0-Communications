@@ -19,6 +19,7 @@ Servo thruster_D;
 Servo thruster_E;
 Servo thruster_F;
 
+int soft_kill = 1;
 int ks_state;
 long pwm[6];
 
@@ -50,7 +51,7 @@ void setup() {
   // put your setup code here, to run once:
   pinMode(9, INPUT);
   pinMode(8, OUTPUT);
-  digitalWrite(8, HIGH);
+  digitalWrite(8, soft_kill);
   thruster_A.attach(thruster_A_pin);
   thruster_B.attach(thruster_B_pin);
   thruster_C.attach(thruster_C_pin);
@@ -122,7 +123,7 @@ void loop() {
     gBlinkLedDate += 2000 ;
     digitalWrite (LED_BUILTIN, !digitalRead (LED_BUILTIN)) ;
     frame.ext = true ;
-    frame.id = 0x1FFFFFAD ;
+    frame.id = 0x20 ;
     frame.len = 8 ;
     // CAN FRAME {KS STATE, RAINDROP STATE, 0,0,0,0,0,0}
     if (ks_state)
@@ -161,6 +162,14 @@ void loop() {
     Serial.print ("Received: ") ;
     Serial.println (gReceivedFrameCount) ;
   }
+
+  // CHECK SOFT KILL
+  if (frame.data[6])
+    soft_kill = 0;
+  else
+    soft_kill = 1;
+  digitalWrite(8, soft_kill);
+  
   // MAP PWM
   for (int i = 0; i < 6; i++) {
     if (pwm[i] != 0) {
