@@ -37,6 +37,7 @@ static uint32_t gReceivedFrameCount = 0;
 static uint32_t gSentFrameCount = 0;
 
 void esc_innit() {
+  Serial.println("INIT");
   thruster_A.writeMicroseconds(1500);
   thruster_B.writeMicroseconds(1500);
   thruster_C.writeMicroseconds(1500);
@@ -155,30 +156,30 @@ void loop() {
     Serial.print ("  rtr: "); Serial.println (frame.rtr);
     Serial.print ("  len: "); Serial.println (frame.len);
     Serial.print ("  data: ");
-    /*for(int x = 0; x < frame.len; x++) {
-      Serial.print (frame.data[x],HEX); Serial.print(":");
-      }
-      Serial.println ("");*/
+    for (int x = 0; x < frame.len - 1; x++) {
+      Serial.print (frame.data[x], HEX); Serial.print(":");
+    }
+    Serial.println (frame.data[frame.len - 1], HEX);
     Serial.print ("Received: ") ;
     Serial.println (gReceivedFrameCount) ;
-  }
 
-  // CHECK SOFT KILL
-  if (frame.data[6])
-    soft_kill = 0;
-  else
-    soft_kill = 1;
-  digitalWrite(8, soft_kill);
-  
-  // MAP PWM
-  for (int i = 0; i < 6; i++) {
-    if (pwm[i] != 0) {
-      int val = int(frame.data[i]);
-      pwm[i] = map(val, 0, 255, 1000, 2000);
-      Serial.print("Thruster ");
-      Serial.print(i);
-      Serial.print(" PWM value: ");
-      Serial.println(pwm[i]);
+    if (frame.id == 2) {
+      // CHECK SOFT KILL
+      if (frame.data[6])
+        soft_kill = 0;
+      else
+        soft_kill = 1;
+      digitalWrite(8, soft_kill);
+
+      // MAP PWM
+      for (int i = 0; i < 6; i++) {
+        int val = int(frame.data[i]);
+        pwm[i] = map(val, 0, 255, 1000, 2000);
+        Serial.print("Thruster ");
+        Serial.print(i);
+        Serial.print(" PWM value: ");
+        Serial.println(pwm[i]);
+      }
     }
   }
   thruster_A.writeMicroseconds(pwm[0]);
