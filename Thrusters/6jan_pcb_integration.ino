@@ -121,9 +121,9 @@ void loop() {
   can.poll();
   CANMessage frame ;
   if (gBlinkLedDate < millis ()) {
-    gBlinkLedDate += 2000 ;
+    gBlinkLedDate += 1000 ;
     digitalWrite (LED_BUILTIN, !digitalRead (LED_BUILTIN)) ;
-    frame.ext = true ;
+    frame.ext = false ;
     frame.id = 0x20 ;
     frame.len = 8 ;
     // CAN FRAME {KS STATE, RAINDROP STATE, 0,0,0,0,0,0}
