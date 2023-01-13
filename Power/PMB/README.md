@@ -48,6 +48,7 @@ P W G = Pink, Warm White, Green LEDs
 
 X 1 F = shut down call is initialized, SBC will shut down and power will be cut, can be cancelled by double press button but SBC might shut down anyway
 
-0 0 0 = sometimes is like this when voltage transition thru the hysteresis for low voltage flag (idk how to fix)
+0 0 0 = it is like this when voltage transition through the hysteresis from too low voltage and battery is stucked in the 15.0 V - 15.3 V range, 
+        this is ok because batteries should not be that low to start with.
 
 if any other combination exists means got bug 
