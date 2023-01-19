@@ -1,3 +1,13 @@
+void float_to_bytes(float val, byte *ptr) {
+  union {
+    float val;
+    byte arr[4];
+  } u;
+  u.val = val;
+  memcpy(ptr, u.arr, 4);
+}
+
+
 float toFloat(uint8_t x) {
     return x / 255.0e7;
 }
