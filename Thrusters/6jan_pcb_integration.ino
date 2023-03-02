@@ -66,10 +66,10 @@ void setup() {
   ks_state = 1;
   esc_innit();
   Serial.begin(115200);
-  while (!Serial) {
-    delay (50) ;
-    digitalWrite (LED_BUILTIN, !digitalRead (LED_BUILTIN)) ;
-  }
+  //while (!Serial) {
+    //delay (50) ;
+    //digitalWrite (LED_BUILTIN, !digitalRead (LED_BUILTIN)) ;
+  //}
   //--- There are no default SPI1 pins so they must be explicitly assigned
   //--- Begin SPI1
   SPI.begin () ;
