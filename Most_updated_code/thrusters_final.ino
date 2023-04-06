@@ -15,7 +15,7 @@ Servo thruster_F;
 byte thruster_pins[6] = {A0, A1, A2, A3, 7, 6};
 Servo thrusters[6] = {thruster_A, thruster_B, thruster_C, thruster_D, thruster_E, thruster_F};
 
-int soft_kill = 1;
+int soft_kill;
 int ks_state;
 int pwm[6];
 
@@ -46,6 +46,10 @@ void esc_init() {
 
 void setup() {
   // put your setup code here, to run once:
+  Serial.begin(115200);
+  
+  Serial.println("INIT Start");
+  soft_kill = 1;
   pinMode(9, INPUT);
   pinMode(8, OUTPUT);
   digitalWrite(8, soft_kill);
@@ -58,11 +62,7 @@ void setup() {
   ks_state = 1;
   esc_init();
 
-  Serial.begin(115200);
-  //while (!Serial) {
-  //delay (50) ;
-  //digitalWrite (LED_BUILTIN, !digitalRead (LED_BUILTIN)) ;
-  //}
+
   //--- There are no default SPI1 pins so they must be explicitly assigned
   //--- Begin SPI1
   SPI.begin () ;
@@ -97,12 +97,13 @@ void setup() {
     Serial.print ("Configuration error 0x") ;
     Serial.println (errorCode, HEX) ;
   }
+  Serial.println("INIT DONE");
 }
 
 void loop() {
   // can.poll();
   can.isr_core();
-  
+
   // KS CHECK
   if (!digitalRead(9)) {
     ks_state = 0;
