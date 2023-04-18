@@ -54,10 +54,10 @@ void setup() {
   pinMode(8, OUTPUT);
   digitalWrite(8, soft_kill);
 
+  while (!digitalRead(9));
+
   for (int i = 0; i < 6; i++)
     thrusters[i].attach(thruster_pins[i]);
-
-  while (!digitalRead(9));
 
   ks_state = 1;
   esc_init();
