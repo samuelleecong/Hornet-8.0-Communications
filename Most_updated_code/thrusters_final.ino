@@ -124,10 +124,10 @@ void loop() {
     frame.ext = false ;
     frame.id = 0x20 ;
     frame.len = 8 ;
-    // CAN FRAME {KS STATE, RAINDROP STATE, 0,0,0,0,0,0}
+    // CAN FRAME {KS STATE, RAINDROP STATE, MSG_COUNT,0,0,0,0,0}
     frame.data [0] = ks_state;
     frame.data [1] = 0x00 ;
-    frame.data [2] = 0x00 ;
+    frame.data [2] = gSentFrameCount;
     frame.data [3] = 0x00 ;
     frame.data [4] = 0x00 ;
     frame.data [5] = 0x00 ;
