@@ -169,7 +169,7 @@ void loop() {
 
       // MAP PWM
       for (int i = 0; i < 6; i++) {
-        pwm[i] = map((int) frame.data[i], 0, 255, 1000, 2000);
+        pwm[i] = map((int) frame.data[i], 0, 255, 1100, 1900);
         thrusters[i].writeMicroseconds(pwm[i]);
       }
     }
