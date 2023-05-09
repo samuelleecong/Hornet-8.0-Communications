@@ -246,7 +246,7 @@ void loop()
   }
   CANMessage frame ;
   if (gBlinkLedDate < millis ()) {
-    gBlinkLedDate += 500 ;
+    gBlinkLedDate += 100 ;
     digitalWrite (LED_BUILTIN, !digitalRead (LED_BUILTIN)) ;
     frame.ext = false ;
     frame.id = 0x00000018 ;
@@ -277,7 +277,8 @@ void loop()
     frame.id = 0x00000019 ;
     frame.len = 8 ;
     float_to_bytes(yaw, frame.data);
-    frame.data[4] = byte(-depth * 51);
+    frame.data[4] = byte(max(0, depth * 51));
+    frame.data[5] = byte(depth * 51);
     //    frame.data[4] = byte((accel_x + 2) * 64);
     //    frame.data[5] = byte((accel_y + 2) * 64);
     //    frame.data[6] = byte((accel_z + 2) * 64);
